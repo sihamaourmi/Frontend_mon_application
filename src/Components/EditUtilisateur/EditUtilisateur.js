@@ -58,7 +58,7 @@ const handelPasswordChange = (event)=>{
 const handelSubmit = (event)=>{
   event.preventDefault();
   console.log("test");
-  if(file){
+
       const formData = new FormData();
       formData.append('file',file);//ajouter à l'interieur de formdata un element file
           formData.append('nom',nom);
@@ -66,7 +66,9 @@ const handelSubmit = (event)=>{
           formData.append('email',email);
           formData.append('service',service);
           formData.append('password',password);
+          if(file){
           formData.append('imagename',imagename);
+          }
       
       axios.put(`http://localhost:5000/utilisateur/edit/${params.id}`,formData)
       .then(( response )=>{
@@ -75,28 +77,49 @@ const handelSubmit = (event)=>{
       }).catch(( error )=>{
           console.log(error);
       });
-}}
+}
 
   return (
     <React.Fragment>
+<div class="container">
+      <div> 
 
-    <div> 
-      <h3> Modifier Utilisateur</h3>
+      <h3  class="text-center bg-info text-white mt-3 mb-3 "> Modifier Utilisateur</h3>
     </div>
-
+    <div class="row align-items-center  border ">
     <form  onSubmit={handelSubmit} >
 
-      <label >Nom  </label>
-      <input type="text"  name="nom" onChange={handelNomChange} value={nom}/><br/><br/>
+    <div class="row paddingTop">
+      <div class="col-md-6 ">
+      <label class="form-label rightLabel fs-3 ">Nom  </label>
+      </div>
+      <div class="col-md-2 ">
+      <input type="text" class="form-control" name="nom" onChange={handelNomChange} value={nom}/><br/><br/>
+      </div>
+        </div>
+        <div class="row paddingTop">
+      <div class="col-md-6 ">
+      <label class="form-label rightLabel fs-3 "  >Prénom  </label>
+      </div>
+        <div class="col-md-2 ">
+      <input type="text" class="form-control"  name="prenom" onChange={handelPrenomChange} value={prenom}/><br/><br/>
+      </div>
+        </div>
+        <div class="row paddingTop">
+      <div class="col-md-6 ">
+      <label class="form-label rightLabel fs-3 ">Email   </label>
+      </div>
+        <div class="col-md-2 ">
+      <input type="email" class="form-control" name="email" onChange={handelEmailChange} value={email}/><br/><br/>
+      </div>
+        </div>
 
-
-      <label >Prénom  </label>
-      <input type="text"  name="prenom" onChange={handelPrenomChange} value={prenom}/><br/><br/>
-
-      <label >Email   </label>
-      <input type="email"  name="email" onChange={handelEmailChange} value={email}/><br/><br/>
-      <label>Service </label>
-      <select name="service" onChange={handelServiceChange}>
+        <div class="row paddingTop">
+      <div class="col-md-6 ">
+      <label class="form-label rightLabel fs-3 ">Service </label>
+      </div>
+        <div class="col-md-3 ">
+      <select name="service" class="form-select" value={service} onChange={handelServiceChange}>
         <option>Sélectionnez votre Service </option>
         <option >Conception</option>
         <option >Fabrication</option>
@@ -106,20 +129,41 @@ const handelSubmit = (event)=>{
         <option >Production</option>
         <option >Maitenance</option>
         <option >Methode</option>
-       </select><br/><br/>
+       </select>
+       </div>
+         </div>
 
-      <label >Mot de passe   </label>
-      <input type="password" name="password" onChange={handelPasswordChange}  value={password} /><br/><br/>
-
+         <div class="row paddingTop">
+           <div class="col-md-6 ">
+      <label class="form-label rightLabel fs-3 "  >Mot de passe   </label>
+      </div>
+        <div class="col-md-2 ">
+      <input type="password" class="form-control" name="password" onChange={handelPasswordChange}  value={password} /><br/><br/>
+      </div>
+        </div>
 
       
 
-      
-       <label>Photo </label>
-       <input type="file" onChange={handelFileChange}/><br/><br/>
-      <button type='submit'>Enregistrer</button>
-      
+        <div class="row paddingTop">
+      <div class="col-md-6 ">
+       <label class="form-label rightLabel fs-3 ">Photo </label>
+       </div>
+         <div class="col-md-3 ">
+       <input type="file" class="form-control" onChange={handelFileChange}/><br/><br/>
+       </div>
+         </div>
+         <div class="row paddingTop paddingBtn">
+         <div class="col-md-7">
+      <button type="submit" class="btn btn-primary rightLabel">Enregistrer</button>
+      </div>
+      <div class="col-md-2">
+        <a class="btn btn-secondary "   href="/allutilisateur" role="button">Annuler </a>
+        </div>
+          </div>
+
     </form>
+    </div>
+      </div>
 
 
 

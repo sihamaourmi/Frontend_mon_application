@@ -17,7 +17,11 @@ const reducer = (state, action) => {
       case 'FETCH_SUCCESS':
         return {
           loading: false, 
-         utilisateurs: action.payload, 
+         utilisateurs: action.payload.data, 
+         admin:action.payload.service==='admin',
+         nom:action.payload.nom +" "+action.payload.prenom,
+         image:action.payload.image,
+
           error: '', 
         };
       case 'FETCH_ERROR':
@@ -47,7 +51,7 @@ const reducer = (state, action) => {
 try{
   var authentification =state.utilisateurs.map((utilisateur,index) => (
     <Table.Body >
-      <Table.Row key={index}>
+      <Table.Row  key={index} verticalAlign='middle'>
         <Table.Cell>{utilisateur.nom}</Table.Cell>
         <Table.Cell>{utilisateur.prenom}</Table.Cell>
         <Table.Cell>{utilisateur.email}</Table.Cell>
@@ -56,11 +60,11 @@ try{
   
   
          
-        {utilisateur.admin ? <Table.Cell>
+        {state.admin ? <Table.Cell>
         <Button primary   as='a' href={`/utilisateur/${utilisateur._id}`}>Modifier</Button></Table.Cell>  :
         null
         }
-       {utilisateur.admin ? <Table.Cell> 
+       {state.admin ? <Table.Cell> 
          <form action={`http://localhost:5000/utilisateur/delete/${utilisateur._id}?_method=DELETE`} method="post">
               <input type="hidden" name="_method" value="DELETE"/>
         <Button  positive>Supprimer</Button>
@@ -90,8 +94,8 @@ catch(error){
   return (
     <React.Fragment>
       
-    <Navbar/>
-      <Table striped>
+    <Navbar role='admin'nom={state.nom} image ={state.image}/>
+      <Table color='purple' key='purple' inverted >
        <Table.Header>
          <Table.Row>
            <Table.HeaderCell>Nom</Table.HeaderCell>

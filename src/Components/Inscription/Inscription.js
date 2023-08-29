@@ -43,35 +43,61 @@ const handelPasswordChange = (event)=>{
           formData.append('service',service);
           formData.append('password',password);
           formData.append('imagename',imagename);
+          formData.append('admin',service==='admin');
           axios.post(`http://localhost:5000/submit-login`,formData)
           .then(( response )=>{
               console.log(response.data);
-              return navigate("/login");
+              return navigate("/allutilisateur");
           }).catch(( error )=>{
               console.log(error);
           });
   }}
   return (
     <React.Fragment>
-
+<div class="container">
       <div> 
-        <h3>Créez votre nouveau compte</h3>
+        <h3 class="text-center bg-info text-white mt-3 mb-3 ">Créez un nouveau compte</h3>
       </div>
+      <div class="row align-items-center  border ">
 
       <form  onSubmit={handelSubmit} >
 
-        <label >Nom  </label>
-        <input type="text"  name="nom" onChange={handelNomChange}/><br/><br/>
 
+      <div class="row paddingTop">
+      <div class="col-md-6 ">
+        <label class="form-label rightLabel fs-3 " >Nom  </label>
+        </div>
+        <div class="col-md-2 ">
+        <input type="text" class="form-control"  name="nom" onChange={handelNomChange}/>
+        </div>
+        </div>
 
-        <label >Prénom  </label>
-        <input type="text"  name="prenom" onChange={handelPrenomChange} /><br/><br/>
+        <div class="row paddingTop">
+      <div class="col-md-6 ">
+        <label class="form-label rightLabel fs-3 " >Prénom  </label>
+        </div>
+        <div class="col-md-2 ">
+        <input  type="text" class="form-control"   name="prenom" onChange={handelPrenomChange} />
+        </div>
+        </div>
 
-        <label >Email   </label>
-        <input type="email"  name="email" onChange={handelEmailChange} /><br/><br/>
-        <label>Status  </label>
-        <select name="service" onChange={handelServiceChange}>
+        <div class="row paddingTop">
+      <div class="col-md-6 ">
+        <label class="form-label rightLabel fs-3 ">Email   </label>
+        </div>
+        <div class="col-md-2 ">
+        <input type="email" class="form-control"  name="email" onChange={handelEmailChange} />
+        </div>
+        </div>
+
+        <div class="row paddingTop">
+      <div class="col-md-6 ">
+        <label class="form-label rightLabel fs-3 ">Service  </label>
+        </div>
+        <div class="col-md-3 ">
+        <select name="service" class="form-select"  onChange={handelServiceChange}>
           <option>Sélectionnez votre Service </option>
+          <option >admin</option>
           <option >Conception</option>
           <option >Fabrication</option>
           <option >Automatisation</option>
@@ -80,23 +106,43 @@ const handelPasswordChange = (event)=>{
           <option >Production</option>
           <option >Maitenance</option>
           <option >Methode</option>
-         </select><br/><br/>
+         </select>
+         </div>
+         </div>
 
-        <label >Mot de passe   </label>
-
-        <input type="password" name="password" onChange={handelPasswordChange} /><br/><br/>
+         <div class="row paddingTop">
+           <div class="col-md-6 ">
+        <label class="form-label rightLabel fs-3 " >Mot de passe   </label>
+        </div>
+        <div class="col-md-2 ">
+        <input type="password"  class="form-control" name="password" onChange={handelPasswordChange} />
+        </div>
+        </div>
 
 
         
 
-        
-         <label>Photo </label>
-         <input type="file" onChange={handelFileChange}/><br/><br/>
-        <button type='submit'>Valider</button>
-        
+        <div class="row paddingTop">
+      <div class="col-md-6 ">
+         <label class="form-label rightLabel fs-3 ">Photo </label>
+         </div>
+         <div class="col-md-3 ">
+         <input type="file"  class="form-control" onChange={handelFileChange}/>
+         </div>
+         </div>
+
+         <div class="row paddingTop paddingBtn">
+         <div class="col-md-7">
+        <button type='submit' class="btn btn-primary rightLabel">Valider</button>
+          </div>
+          <div class="col-md-2">
+        <a class="btn btn-secondary "   href="/allutilisateur" role="button">Annuler </a>
+        </div>
+          </div>
+
       </form>
-
-
+      </div>
+      </div>
 
     </React.Fragment>
   )

@@ -17,6 +17,9 @@ import { Menu } from 'semantic-ui-react'
       this.props.role =="Production" ||
       this.props.role =="Maitenance" ||
       this.props.role =="Methode" ;//Production
+    
+    
+    
       return this.props.role =="admin"?(
         <Menu inverted>
         <Menu.Item
@@ -40,12 +43,25 @@ import { Menu } from 'semantic-ui-react'
           onClick={this.handleItemClick}
         />
     
+    <Menu.Menu position='right'>
+
          <Menu.Item
          as='' href="http://localhost:5000/deconnecter"
           name='Se deconnecter'
           active={activeItem === 'Se deconnecter'}
           onClick={this.handleItemClick}
         />
+            <Menu.Item>
+          <img alt="logo" src={`http://localhost:5000/${this.props.image}`} />
+        </Menu.Item>
+           <Menu.Item
+         as='' href=""
+          name={this.props.nom}
+          active={activeItem === this.props.nom}
+          onClick={this.handleItemClick}
+        />
+                  </Menu.Menu>
+
       </Menu>
       ):ifClient?
       (
@@ -64,12 +80,25 @@ import { Menu } from 'semantic-ui-react'
           onClick={this.handleItemClick}
         />
     
-         <Menu.Item
-         as='' href="http://localhost:5000/deconnecter"
-          name='Se deconnecter'
-          active={activeItem === 'Se deconnecter'}
-          onClick={this.handleItemClick}
-        />
+    <Menu.Menu position='right'>
+
+<Menu.Item
+as='' href="http://localhost:5000/deconnecter"
+ name='Se deconnecter'
+ active={activeItem === 'Se deconnecter'}
+ onClick={this.handleItemClick}
+/>
+   <Menu.Item>
+   <img alt="logo" src={`http://localhost:5000/${this.props.image}`} />
+</Menu.Item>
+  <Menu.Item
+as='' href=""
+name={this.props.nom}
+active={activeItem ===this.props.nom}
+ onClick={this.handleItemClick}
+/>
+         </Menu.Menu>
+
       </Menu>
       ):
       (
@@ -82,12 +111,25 @@ import { Menu } from 'semantic-ui-react'
         />
 
     
-         <Menu.Item
-         as='' href="http://localhost:5000/deconnecter"
-          name='Se deconnecter'
-          active={activeItem === 'Se deconnecter'}
-          onClick={this.handleItemClick}
-        />
+<Menu.Menu position='right'>
+
+<Menu.Item
+as='' href="http://localhost:5000/deconnecter"
+ name='Se deconnecter'
+ active={activeItem === 'Se deconnecter'}
+ onClick={this.handleItemClick}
+/>
+   <Menu.Item>
+   <img alt="logo" src={`http://localhost:5000/${this.props.image}`} />
+</Menu.Item>
+  <Menu.Item
+as='' href=""
+name={this.props.nom}
+active={activeItem === this.props.nom}
+ onClick={this.handleItemClick}
+/>
+         </Menu.Menu>
+
       </Menu>
       )
       }

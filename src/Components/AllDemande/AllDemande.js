@@ -12,9 +12,10 @@ import 'moment/locale/fr'
 
 moment().local('fr')
 
-
+ 
 
 function AllDemande() {
+  
 
   const initialestate ={
     loading : true,
@@ -29,7 +30,10 @@ const reducer = (state, action) => {
           loading: false, 
          demandes: action.payload.data, 
           error: '', 
-          service:action.payload.service
+          service:action.payload.service,
+          nom:action.payload.nom +" "+action.payload.prenom,
+          image:action.payload.image
+
         };
       case 'FETCH_ERROR':
         return {
@@ -64,10 +68,10 @@ try{
 
 
 var authentif=state.demandes.map((demande,index) => (
-    <Table.Body >
-      <Table.Row key={index}>
+    <Table.Body   >
+      <Table.Row  key={index} verticalAlign='middle'>
         <Table.Cell>{demande.num_demande}  </Table.Cell>
-        <Table.Cell>{demande.client}</Table.Cell>
+        <Table.Cell >{demande.client}</Table.Cell>
         <Table.Cell>{demande.service}</Table.Cell>
         <Table.Cell>{demande.num_ligne}</Table.Cell>
         <Table.Cell>{demande.nom_machine}</Table.Cell>
@@ -77,28 +81,49 @@ var authentif=state.demandes.map((demande,index) => (
         {/* pour les dates on ajoute la format qu'on souhaites on se basent sur le sites 'momentjs.com ' la format qu'on a choisi maintenat c'est LL */}
         <Table.Cell>{moment (demande.date_creation).format('LLL')}</Table.Cell>
         <Table.Cell>{moment (demande.date_prevue).format('LL')}</Table.Cell>
-        <Table.Cell>{moment (demande.date_realisation).format('LL')}</Table.Cell>
+        <Table.Cell>
+         {demande.date_realisation==null?"":
+         moment (demande.date_realisation).format('LL')
+         }          
+          </Table.Cell>
         <Table.Cell>{demande.statut}</Table.Cell>
-        <Table.Cell>{demande.date_validation}</Table.Cell>
+        <Table.Cell>
+        {demande.date_validation==null?"":
+         moment (demande.date_validation).format('LL')
+         } 
+          
+          </Table.Cell>
           
 
         <Table.Cell>
+      
+        
+    
+        
         {demande.image?
-        <a href={`http://localhost:5000/${demande.image}`} target="_blank">
+          demande.image.indexOf(".png")!==-1 ||demande.image.indexOf(".jpg")!==-1 || demande.image.indexOf(".PNG")!==-1 || demande.image.indexOf(".JPG")!==-1 ||demande.image.indexOf(".webp")!==-1 ||demande.image.indexOf(".jpeg")!==-1   ?
+          <a href={`http://localhost:5000/${demande.image}`} target="_blank">
           <img src={`http://localhost:5000/${demande.image}`} width={'150px'}/>
           </a>
           :
+          <a href={`http://localhost:5000/${demande.image}`} target="_blank">
+        <img  src="docIcon.png" width={'80px'} />
+        </a>
+          :
           ""
-          
         }
           </Table.Cell>
 
         <Table.Cell>
           { demande.imageAssemblage?
+            demande.imageAssemblage.indexOf(".png")!==-1 ||demande.imageAssemblage.indexOf(".jpg")!==-1 ?
             <a href={`http://localhost:5000/${demande.imageAssemblage}`} target="_blank">
                     <img src={`http://localhost:5000/${demande.imageAssemblage}`} width={'150px'}/>
                     </a>
-
+                       :
+                       <a href={`http://localhost:5000/${demande.imageAssemblage}`} target="_blank">
+                     <img  src="docIcon.png" width={'80px'} />
+                     </a>
                     :
                     ""
 
@@ -113,7 +138,7 @@ var authentif=state.demandes.map((demande,index) => (
         {(state.service==='Qualite'  ||
         state.service==='Production'  ||
         state.service==='Maitenance'  ||
-        state.service==='Methode' ) && demande.statut==='Pre-validation'
+        state.service==='Methode' ) && demande.statut==='Pre-validation' && state.service===demande.service
         ? 
         <Button primary   as='a' href={`/traitement/${demande._id}`}>Valider</Button>
           :''
@@ -123,7 +148,7 @@ var authentif=state.demandes.map((demande,index) => (
         {(state.service==='Qualite'  ||
         state.service==='Production'  ||
         state.service==='Maitenance'  ||
-        state.service==='Methode' ) && demande.statut==='A traiter'
+        state.service==='Methode' ) && demande.statut==='A traiter' && state.service===demande.service
         ? 
           <Button primary   as='a' href={`/demande/${demande._id}`}>Modifier</Button>
           :''
@@ -133,7 +158,7 @@ var authentif=state.demandes.map((demande,index) => (
 {(state.service==='Qualite'  ||
         state.service==='Production'  ||
         state.service==='Maitenance'  ||
-        state.service==='Methode' ) && demande.statut==='A traiter'
+        state.service==='Methode' ) && demande.statut==='A traiter' && state.service===demande.service
         
         ? 
           <form action={`http://localhost:5000/demande/delete/${demande._id}?_method=DELETE`} method="post">
@@ -179,12 +204,14 @@ var authentif=state.demandes.map((demande,index) => (
         ?  
        <Button primary   as='a'  href={`/traitement/${demande._id}`}>Pré-valider</Button>
        :""}
-{(
-  !(state.service==='Qualite'  ||
+{
+  (!(state.service==='Qualite'  ||
   state.service==='Production'  ||
   state.service==='Maitenance'  ||
   state.service==='Methode' ) 
-  && demande.statut!=='A traiter')
+  &&
+   demande.statut==='Terminer')
+  || (state.service==='admin' && demande.statut!=='A traiter')
         ?  <div>
        <Button primary   as='a' href={`/alltache/${demande.num_demande}`}>Consulter les taches</Button>
        </div>
@@ -215,10 +242,10 @@ catch(error){
 
   return (
     <React.Fragment> 
-      <Navbar  role={state.service}/>
-      <Table striped>
-       <Table.Header>
-         <Table.Row>
+      <Navbar  role={state.service} nom={state.nom} image ={state.image}/>
+      <Table color='purple' key='purple' inverted >
+       <Table.Header >
+         <Table.Row >
            <Table.HeaderCell>Num Demande</Table.HeaderCell>
            <Table.HeaderCell>Client </Table.HeaderCell>
            <Table.HeaderCell>Servive</Table.HeaderCell>

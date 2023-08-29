@@ -86,7 +86,7 @@ const handelDate_validationChange = (event)=>{
 
 const handelSubmit = (event)=>{
     event.preventDefault();
-    if(file){
+    
         const formData = new FormData();
         formData.append('file',file);//ajouter à l'interieur de formdata un element file
         formData.append('num_demande',num_demande);
@@ -101,8 +101,9 @@ const handelSubmit = (event)=>{
         formData.append('date_realisation',date_realisation);
         formData.append('statut',statut);
         formData.append('date_validation',date_validation);
+        if(file){
         formData.append('image',image);
-        
+        }
         axios.post(`http://localhost:5000/submit-demande`,formData)
         .then(( response )=>{
             console.log(response.data);
@@ -110,7 +111,7 @@ const handelSubmit = (event)=>{
         }).catch(( error )=>{
             console.log(error);
         });
-}}
+}
 
 
 axios.get('http://localhost:5000/alldemande',{withCredentials:true})
@@ -118,11 +119,19 @@ axios.get('http://localhost:5000/alldemande',{withCredentials:true})
 
     
 
+  setNum_demande(1);
+
+
+  setStatut("A traiter")
+
+  if(response.data.data.length>0 ){
     var lastDemand= response.data.data.reduce(
       (prev, current) => {
         return parseInt(prev.num_demande,10) > parseInt(current.num_demande,10) ? prev : current
       }).num_demande;
       setNum_demande(parseInt(lastDemand,10)+1);
+  }
+    
       setClient(response.data.nom)
       setService(response.data.service)
       
@@ -138,7 +147,6 @@ axios.get('http://localhost:5000/alldemande',{withCredentials:true})
   return (
 
     <React.Fragment>
-<Navbar />
 <React.Fragment> 
 <div class="container">
       <div> 
@@ -261,12 +269,12 @@ axios.get('http://localhost:5000/alldemande',{withCredentials:true})
         <label class="form-label rightLabel">Statut :</label>
         </div>
         <div class="col-md-3 ">
-         <select name="statut" class="form-select" onChange={handelStatutChange} >
-          <option selected>Sélectionnez etat d'avancement </option>
+         <select name="statut" class="form-select" onChange={handelStatutChange} disabled >
+          <option >Sélectionnez etat d'avancement </option>
           <option >Accepter</option>
           <option >En cours</option>
           <option >Terminer</option>
-          <option  >A traiter</option>
+          <option selected>A traiter</option>
           <option >Pre-validation</option>
           <option >Valider</option>
          </select>

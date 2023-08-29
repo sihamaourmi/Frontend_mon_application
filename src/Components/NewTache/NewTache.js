@@ -56,15 +56,29 @@ const handelStatutChange = (event)=>{
 useEffect(()=>{
 
   setNum_demande(`${params.id}`)
-  /*axios.get(`http://localhost:5000/demande/${params.id}`)
-  .then(response =>{
+  axios.get(`http://localhost:5000/alltaches`,{withCredentials:true})
+  .then(response=>{
+    //  console.log("dsdsdsdsds  "+response.data.data);
+  
+  
+    setNum_tache(1);
+    if(response.data.data.length>0 ){
+      var lastTask= response.data.data.reduce(
+        (prev, current) => {
+          //console.log(current.num_tache);
+          return parseInt(prev.num_tache,10) > parseInt(current.num_tache,10) ? prev : current
+        }).num_tache;
+        setNum_tache(parseInt(lastTask,10)+1);
+      }
+        setEmploye(response.data.nom)
+        setService(response.data.service)
+  
+          //dispatch({type: 'FETCH_SUCCESS' , payload: response.data});
+  
+      }).catch(error=>{  
+           //dispatch({type: 'FETCH_ERROR'});
+          });
 
-      setNum_demande(response.data.num_demande)
-
-      
-  }).catch(error =>{
-    console.log(error);
-  })*/
 },[])
 
 
@@ -96,25 +110,7 @@ const handelSubmit = (event)=>{
         });
 }
 
-axios.get(`http://localhost:5000/alltaches`,{withCredentials:true})
-.then(response=>{
-  //  console.log("dsdsdsdsds  "+response.data.data);
 
-
-    var lastTask= response.data.data.reduce(
-      (prev, current) => {
-        //console.log(current.num_tache);
-        return parseInt(prev.num_tache,10) > parseInt(current.num_tache,10) ? prev : current
-      }).num_tache;
-      setNum_tache(parseInt(lastTask,10)+1);
-      setEmploye(response.data.nom)
-      setService(response.data.service)
-
-        //dispatch({type: 'FETCH_SUCCESS' , payload: response.data});
-
-    }).catch(error=>{  
-         //dispatch({type: 'FETCH_ERROR'});
-        });
 
 
   return (

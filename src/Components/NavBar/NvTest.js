@@ -48,12 +48,24 @@ import { Menu } from 'semantic-ui-react'
         />
     
       
-         <Menu.Item
-         as='' href="http://localhost:5000/deconnecter"
-          name='Se deconnecter'
-          active={activeItem === 'Se deconnecter'}
-          onClick={this.handleItemClick}
-        />
+    <Menu.Menu position='right'>
+
+<Menu.Item
+as='' href="http://localhost:5000/deconnecter"
+ name='Se deconnecter'
+ active={activeItem === 'Se deconnecter'}
+ onClick={this.handleItemClick}
+/>
+   <Menu.Item>
+   <img alt="logo" src={`http://localhost:5000/${this.props.image}`} />
+</Menu.Item>
+  <Menu.Item
+as='' href=""
+name={this.props.nom}
+active={activeItem === this.props.nom}
+ onClick={this.handleItemClick}
+/>
+         </Menu.Menu>
       </Menu>
       ):
       (
@@ -64,13 +76,7 @@ import { Menu } from 'semantic-ui-react'
           active={activeItem === 'Demande'}
           onClick={this.handleItemClick}
         />
-      
-        <Menu.Item
-        as='' href="/alltache/:id"
-          name='tache'
-          active={activeItem === 'Tache'}
-          onClick={this.handleItemClick}
-        />
+
         
   
         {showNewTask? 
@@ -84,12 +90,24 @@ import { Menu } from 'semantic-ui-react'
       ''  
       }
     
-         <Menu.Item
-         as='' href="http://localhost:5000/deconnecter"
-          name='Se deconnecter'
-          active={activeItem === 'Se deconnecter'}
-          onClick={this.handleItemClick}
-        />
+    <Menu.Menu position='right'>
+
+<Menu.Item
+as='' href="http://localhost:5000/deconnecter"
+ name='Se deconnecter'
+ active={activeItem === 'Se deconnecter'}
+ onClick={this.handleItemClick}
+/>
+   <Menu.Item>
+   <img alt="logo" src={`http://localhost:5000/${this.props.image}`} />
+</Menu.Item>
+  <Menu.Item
+as='' href=""
+name={this.props.nom}
+active={activeItem === this.props.nom}
+ onClick={this.handleItemClick}
+/>
+         </Menu.Menu>
       </Menu>
       )
       }

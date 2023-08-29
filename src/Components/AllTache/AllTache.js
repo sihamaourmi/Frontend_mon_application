@@ -34,6 +34,8 @@ const reducer = (state, action) => {
           loading: false, 
          taches: action.payload.data, 
          service:action.payload.service,
+         nom:action.payload.nom +" "+action.payload.prenom,
+          image:action.payload.image,
           error: '', 
         };
       case 'FETCH_ERROR':
@@ -63,10 +65,9 @@ const reducer = (state, action) => {
 try{
   var authtache= state.taches.map((tache,index) => (
     <Table.Body >
-      <Table.Row key={index}>
+      <Table.Row key={index} verticalAlign='middle'>
         <Table.Cell>{tache.num_demande}</Table.Cell>
         <Table.Cell>{tache.employe}</Table.Cell>
-        <Table.Cell>{state.service}</Table.Cell>
         <Table.Cell>{tache.num_tache}</Table.Cell>
         <Table.Cell>{tache.description_tache}</Table.Cell>
         {/* pour les dates on ajoute la format qu'on souhaites on se basent sur le sites 'momentjs.com ' la format qu'on a choisi maintenat c'est LL */}
@@ -75,14 +76,29 @@ try{
         <Table.Cell>{moment (tache.date_realisation).format('LL')}</Table.Cell>
       
       
-        {(state.service==='admin' ||state.service==='Conception'||state.service==='Fabrication') ?
+        {(state.service==='admin' ||state.service==='Conception'||
+        state.service==='Fabrication'||state.service==='Assemblage') ?
         <Table.Cell>{tache.statut}</Table.Cell>
         :
           ''
           }
 
 
-        {(state.service==='admin' ||state.service==='Fabrication') ?
+
+          {(state.service==='admin' ||state.service==='Fabrication') ?
+          <Table.Cell>{tache.date_prevue_F==null?"":moment (tache.date_prevue_F).format('LL')}</Table.Cell>
+          :
+          ''
+          }
+
+
+          {(state.service==='admin' ||state.service==='Fabrication') ?
+        <Table.Cell>{tache.date_realisation_F==null?"":moment (tache.date_realisation_F).format('LL')}</Table.Cell>
+        :
+          ''
+          }
+        {(state.service==='admin' ||state.service==='Fabrication') ||
+        state.service==='Assemblage'?
         <Table.Cell>{tache.statutFabrication}</Table.Cell>
         :
           ''
@@ -90,7 +106,8 @@ try{
 
 
 
-        {(state.service==='admin' ||state.service==='Automatisation') ?
+        {(state.service==='admin' ||state.service==='Automatisation') ||
+        state.service==='Assemblage'?
         <Table.Cell>{tache.statutAutomatisation}</Table.Cell>
         :
           ''
@@ -98,12 +115,18 @@ try{
       
       
           
-        {(state.service==='admin' ||state.service==='Conception'||state.service==='Fabrication') ?
+        {(state.service==='admin' ||state.service==='Conception'||
+        state.service==='Fabrication'||state.service==='Assemblage') ?
         <Table.Cell>
           {tache.photo?
+          tache.photo.indexOf(".png")!==-1 ||tache.photo.indexOf(".jpg")!==-1 ||tache.photo.indexOf(".PNG")!==-1 ||tache.photo.indexOf(".JPG")!==-1 ||tache.photo.indexOf(".webp")!==-1 ||tache.photo.indexOf(".jpeg")!==-1 ?
             <a href={`http://localhost:5000/${tache.photo}`} target="_blank">
           <img src={`http://localhost:5000/${tache.photo}`} width={'150px'}/>
           </a>
+          :
+          <a href={`http://localhost:5000/${tache.photo}`} target="_blank">
+        <img  src="docIcon.png" width={'80px'} />
+        </a>
           :
           ""
 
@@ -115,12 +138,18 @@ try{
           ''
           }
 
-        {(state.service==='admin' ||state.service==='Fabrication') ?
+        {(state.service==='admin' ||state.service==='Fabrication'||
+        state.service==='Assemblage') ?
         <Table.Cell>
           {tache.photoFabrication?
+          tache.photoFabrication.indexOf(".png")!==-1 ||tache.photoFabrication.indexOf(".jpg")!==-1||tache.photoFabrication.indexOf(".PNG")!==-1 ||tache.photoFabrication.indexOf(".JPG")!==-1 ||tache.photoFabrication.indexOf(".webp")!==-1 ||tache.photoFabrication.indexOf(".jpeg")!==-1 ?
                       <a href={`http://localhost:5000/${tache.photoFabrication}`} target="_blank">
 
           <img src={`http://localhost:5000/${tache.photoFabrication}`} width={'150px'}/>
+          </a>
+            :
+            <a href={`http://localhost:5000/${tache.photoFabrication}`} target="_blank">
+          <img  src="docIcon.png" width={'80px'} />
           </a>
           :
           ""
@@ -131,11 +160,17 @@ try{
           ''
           }
 
-        {(state.service==='admin' ||state.service==='Automatisation') ?
+        {(state.service==='admin' ||state.service==='Automatisation'||
+        state.service==='Assemblage') ?
         <Table.Cell>
           {tache.photoAutomatisation?
-                                <a href={`http://localhost:5000/${tache.photoAutomatisation}`} target="_blank">
+          tache.photoAutomatisation.indexOf(".png")!==-1 ||tache.photoAutomatisation.indexOf(".jpg")!==-1 ||tache.photoAutomatisation.indexOf(".PNG")!==-1 ||tache.photoAutomatisation.indexOf(".JPG")!==-1 ||tache.photoAutomatisation.indexOf(".webp")!==-1 ||tache.photoAutomatisation.indexOf(".jpeg")!==-1 ?
+          <a href={`http://localhost:5000/${tache.photoAutomatisation}`} target="_blank">
           <img src={`http://localhost:5000/${tache.photoAutomatisation}`} width={'150px'}/>
+          </a>
+            :
+            <a href={`http://localhost:5000/${tache.photoAutomatisation}`} target="_blank">
+          <img  src="docIcon.png" width={'80px'} />
           </a>
           :
           ""
@@ -153,6 +188,7 @@ try{
          {(tache.statut==="Terminer" && state.service==="Conception") ||
          (tache.statutFabrication==="Terminer" && state.service==="Fabrication") || 
          (tache.statutAutomatisation==="Terminer" && state.service==="Automatisation") ||
+         state.service==="Assemblage" ||
          state.service==="admin"
          ?
          '':
@@ -166,6 +202,7 @@ try{
        {(tache.statut==="Terminer" && state.service==="Conception") ||
          (tache.statutFabrication==="Terminer" && state.service==="Fabrication") || 
          (tache.statutAutomatisation==="Terminer" && state.service==="Automatisation")||
+         state.service==="Assemblage" ||
          state.service==="admin"?
          '':
          <form action={`http://localhost:5000/tache/delete/${tache._id}?_method=DELETE`} method="post">
@@ -190,13 +227,13 @@ catch(error){
 }
   return (
     <React.Fragment> 
-      <NvTest  newTask={params.num_demande} role={state.service}/>
-      <Table striped>
+      <NvTest  newTask={params.num_demande} role={state.service} nom={state.nom} image ={state.image}
+      />
+      <Table color='purple' key='purple' inverted>
        <Table.Header>
-         <Table.Row>
-           <Table.HeaderCell>Num Demande</Table.HeaderCell>
+         <Table.Row >
+           <Table.HeaderCell >Num Demande</Table.HeaderCell>
            <Table.HeaderCell>Employe </Table.HeaderCell>
-           <Table.HeaderCell>Servive</Table.HeaderCell>
            <Table.HeaderCell>Num de la tache</Table.HeaderCell>
            <Table.HeaderCell>Description de la tache</Table.HeaderCell>
            <Table.HeaderCell>Date Creation </Table.HeaderCell>
@@ -204,21 +241,36 @@ catch(error){
            <Table.HeaderCell>Date Realisation</Table.HeaderCell>
 
 
-           {(state.service==='admin' ||state.service==='Conception' ||state.service==='Fabrication') ?
+           {(state.service==='admin' ||state.service==='Conception' ||
+           state.service==='Fabrication'||state.service==='Assemblage') ?
            <Table.HeaderCell>Statut Conception</Table.HeaderCell>
            :
           ''
           }
 
+           {(state.service==='admin' ||state.service==='Fabrication') ?
+           <Table.HeaderCell>Date Prevue F </Table.HeaderCell>
+           :
+           ''
+           }
+           {(state.service==='admin' ||state.service==='Fabrication') ?
+           <Table.HeaderCell>Date Realisation F </Table.HeaderCell>
+           :
+           ''
+           }
 
-          {(state.service==='admin' ||state.service==='Fabrication') ?
+
+
+          {(state.service==='admin' ||state.service==='Fabrication'||
+          state.service==='Assemblage') ?
            <Table.HeaderCell>Statut Fabrication</Table.HeaderCell>
            :
           ''
           }
 
 
-          {(state.service==='admin' ||state.service==='Automatisation') ?
+          {(state.service==='admin' ||state.service==='Automatisation'||
+          state.service==='Assemblage') ?
            <Table.HeaderCell>Statut Automatisation</Table.HeaderCell>
            :
           ''
@@ -227,21 +279,21 @@ catch(error){
 
            
            {(state.service==='admin' ||state.service==='Conception' 
-           ||state.service==='Fabrication') ?
+           ||state.service==='Fabrication'||state.service==='Assemblage') ?
           <Table.HeaderCell>Fichier Conception</Table.HeaderCell>
         
           :
           ''
           }
 
-{(state.service==='admin' ||state.service==='Fabrication') ?
+{(state.service==='admin' ||state.service==='Fabrication'||state.service==='Assemblage') ?
           <Table.HeaderCell>Fichier Fabrication </Table.HeaderCell>
           :
           ''
           }
 
 
-        {(state.service==='admin' ||state.service==='Automatisation' ) ?
+        {(state.service==='admin' ||state.service==='Automatisation' ||state.service==='Assemblage' ) ?
           <Table.HeaderCell>Fichier Automatisation</Table.HeaderCell>
           :
           ''
@@ -259,9 +311,8 @@ catch(error){
          </Table.Row>
        </Table.Header>
 
-    
-    {authtache}
    
+   {authtache}
      </Table>
      </React.Fragment>
      )}

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 //pour les dates 
 import moment from 'moment/moment';
 import 'moment/locale/fr'
+import { Alert } from 'bootstrap';
 
 
 function EditDemande() {
@@ -103,7 +104,6 @@ useEffect(()=>{
 
 const handelSubmit = (event)=>{
     event.preventDefault();
-    alert(file);
   
         const formData = new FormData();
         formData.append('file',file);//ajouter à l'interieur de formdata un element file
@@ -122,7 +122,7 @@ const handelSubmit = (event)=>{
         }
         formData.append('date_validation',date_validation);
         formData.append('statut',statut);
-        axios.put(`http://localhost:5000/demande/edit/${params.id}`,formData)
+        axios.put(`http://localhost:5000/demande/editM/${params.id}`,formData)
         .then(( response )=>{
             console.log(response.data);
             return navigate("/alldemande");
@@ -214,9 +214,9 @@ const handelSubmit = (event)=>{
            <div class="col-md-3">
            <select name="degre_urgence" class="form-select" value={degre_urgence} onChange={handelDegre_urgenceChange}>
             <option>Sélectionnez urgence </option>
-            <option value="AM" >Arret Machine</option>
-            <option value="AP">Arret Production</option>
-            <option value="AC">Amelioration continue</option>
+            <option  >Arret Machine</option>
+            <option >Arret Production</option>
+            <option >Amelioration continue</option>
            </select>
            </div>
            </div>
@@ -268,7 +268,7 @@ const handelSubmit = (event)=>{
          
            <div class="row paddingTop">
       <div class="col-md-6 ">
-         <label class="form-label rightLabel">Date Validation </label>
+         <label class="form-label rightLabel">Date Validation :</label>
          </div>
           <div class="col-md-2">
         <input type="date" class="form-control"  name="date_validation" onChange={handelDate_validationChange} value={date_validation} disabled/><br/><br/>

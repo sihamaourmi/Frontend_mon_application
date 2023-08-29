@@ -26,6 +26,9 @@ function EditTache() {
  const [date_prevue,setDate_prevue] = useState(''); 
  const [date_realisation,setDate_realisation] = useState(''); 
  const [statut,setStatut] = useState(''); 
+ const [date_prevue_F,setDate_prevue_F] = useState(''); 
+ const [date_realisation_F,setDate_realisation_F] = useState('');
+ const [statutFabrication,setStatutFabrication] = useState(''); 
  const [photo,setPhoto] = useState('');
 
 
@@ -58,6 +61,15 @@ const handelDate_realisationChange = (event)=>{
 const handelStatutChange = (event)=>{
   setStatut(event.target.value);
 };
+const handelDatePrevueFChange = (event)=>{
+  setDate_prevue_F(event.target.value);
+};
+const handelDateRealisationFChange = (event)=>{
+  setDate_realisation_F(event.target.value);
+};
+const handelStatutFabricationChange = (event)=>{
+  setStatutFabrication(event.target.value);
+};
 
 
 
@@ -80,6 +92,8 @@ useEffect(()=>{
       setDate_prevue(response.data.date_prevue)
       setDate_realisation(response.data.date_realisation)
       setStatut(response.data.statut)
+      setDate_prevue_F(response.data.date_prevue_F)
+      setDate_realisation_F(response.data.date_realisation_F)
       setPhoto(response.data.photo)
       
   }).catch(error =>{
@@ -91,6 +105,7 @@ const handelSubmit = (event)=>{
     event.preventDefault();
     
       const formData = new FormData();
+      
       formData.append('file',file);//ajouter à l'interieur de formdata un element file
       formData.append('num_demande',num_demande);
       formData.append('employe',employe);
@@ -99,9 +114,16 @@ const handelSubmit = (event)=>{
       formData.append('description_tache',description_tache);
       formData.append('date_prevue',date_prevue);
       formData.append('date_realisation',date_realisation);
+      
     //  if(file){
       console.log("=================>"+service);
         if(service==="Conception"){
+
+          if(statut==="Terminer" && (photo===undefined)){
+            alert("Merci d'ajouter le fichier avant de terminer la tache");
+            return;
+          }
+
           formData.append('statut',statut);
           if(file){
           formData.append('photo',photo);
@@ -109,12 +131,22 @@ const handelSubmit = (event)=>{
 
         }
         else if(service==="Fabrication"){
-          formData.append('statutFabrication',statut);
+          if(statutFabrication==="Terminer" && (photo===undefined)){
+            alert("Merci d'ajouter le fichier avant de terminer la tache");
+            return;
+          }
+          formData.append('statutFabrication',statutFabrication);
+          formData.append('date_prevue_F',date_prevue_F);
+          formData.append('date_realisation_F',date_realisation_F);
           if(file){
           formData.append('photoFabrication',photo);
           }
         }
         else if(service==="Automatisation"){
+          if(statut==="Terminer" && (photo===undefined)){
+            alert("Merci d'ajouter le fichier avant de terminer la tache");
+            return;
+          }
           formData.append('statutAutomatisation',statut);
           if(file){
           formData.append('photoAutomatisation',photo);
@@ -198,26 +230,94 @@ const handelSubmit = (event)=>{
           <label class="form-label rightLabel" > Date Prevue :</label>
           </div>
           <div class="col-md-2">
-  <input type="date"  name="date_prevue"  class="form-control" onChange={handelDate_prevueChange} value={moment(date_prevue).format('YYYY-MM-DD')} />
+            {service==="Fabrication"?
+            <input type="date"  name="date_prevue"  class="form-control" onChange={handelDate_prevueChange} value={moment(date_prevue).format('YYYY-MM-DD')} disabled/>
+            :
+            <input type="date"  name="date_prevue"  class="form-control" onChange={handelDate_prevueChange} value={moment(date_prevue).format('YYYY-MM-DD')} />  
+          }
+
   </div>
           </div>
+
   
+
   
           <div class="row paddingTop">
       <div class="col-md-6 ">
           <label class="form-label rightLabel" >Date Realisation :</label>
           </div>
           <div class="col-md-2">
-  <input type="date"  name="date_realisation" class="form-control" onChange={handelDate_realisationChange} value={moment(date_realisation).format('YYYY-MM-DD')} />
+          {service==="Fabrication"?
+  <input type="date"  name="date_realisation" class="form-control" onChange={handelDate_realisationChange} value={moment(date_realisation).format('YYYY-MM-DD')} disabled/>
+:
+<input type="date"  name="date_realisation" class="form-control" onChange={handelDate_realisationChange} value={moment(date_realisation).format('YYYY-MM-DD')} />
+
+        }
   </div>
           </div>
+  
+
   
           <div class="row paddingTop">
       <div class="col-md-6 ">
           <label class="form-label rightLabel" >Statut :</label>
           </div>
           <div class="col-md-3">
-  <select name="statut" class="form-select"  onChange={handelStatutChange}>
+
+          {service==="Fabrication"?
+  <select name="statut" class="form-select" value={statut}  onChange={handelStatutChange} disabled>
+        <option>Sélectionnez vetat actuel de la tache </option>
+    <option >Encours</option>
+    <option >Terminer</option>
+    <option >En retard</option>
+    <option >Bloquer</option>
+   </select>
+        :
+        <select name="statut" class="form-select" value={statut}  onChange={handelStatutChange}>
+  <option>Sélectionnez vetat actuel de la tache </option>
+    <option >Encours</option>
+    <option >Terminer</option>
+    <option >En retard</option>
+    <option >Bloquer</option>
+   </select>
+          }
+    
+  
+   </div>
+          </div>
+
+          {service==="Fabrication"?
+<div>
+
+          <div class="row paddingTop">
+      <div class="col-md-6 ">
+          <label class="form-label rightLabel" > Date Prevue Fabrication :</label>
+          </div>
+          <div class="col-md-2">
+  <input type="date"  name="date_prevue"  class="form-control" onChange={handelDatePrevueFChange} value={moment(date_prevue_F).format('YYYY-MM-DD')} />
+  </div>
+          </div>
+          
+  
+
+  
+          <div class="row paddingTop">
+      <div class="col-md-6 ">
+          <label class="form-label rightLabel" >Date Realisation Fabrication :</label>
+          </div>
+          <div class="col-md-2">
+  <input type="date"  name="date_realisation" class="form-control" onChange={handelDateRealisationFChange} value={moment(date_realisation_F).format('YYYY-MM-DD')} />
+  </div>
+          </div>
+
+
+
+          <div class="row paddingTop">
+      <div class="col-md-6 ">
+          <label class="form-label rightLabel" >Statut Fabrication :</label>
+          </div>
+          <div class="col-md-3">
+  <select name="statut" class="form-select"  onChange={handelStatutFabricationChange}>
     <option>Sélectionnez vetat actuel de la tache </option>
     <option >Encours</option>
     <option >Terminer</option>
@@ -227,7 +327,8 @@ const handelSubmit = (event)=>{
    </div>
           </div>
    
-
+          </div>
+          :""}
       
           <div class="row paddingTop">
       <div class="col-md-6 ">
