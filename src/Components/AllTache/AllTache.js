@@ -35,7 +35,7 @@ const reducer = (state, action) => {
          taches: action.payload.data, 
          service:action.payload.service,
          nom:action.payload.nom +" "+action.payload.prenom,
-          image:action.payload.image,
+         image:action.payload.image,
           error: '', 
         };
       case 'FETCH_ERROR':
@@ -223,7 +223,7 @@ try{
 
 catch(error){
   console.log(error)
-  console.log("tilisateur non connectr ")
+  console.log("utilisateur non connectr ")
 }
   return (
     <React.Fragment> 
@@ -231,7 +231,7 @@ catch(error){
       />
       <Table color='purple' key='purple' inverted>
        <Table.Header>
-         <Table.Row >
+         <Table.Row verticalAlign='middle' >
            <Table.HeaderCell >Num Demande</Table.HeaderCell>
            <Table.HeaderCell>Employe </Table.HeaderCell>
            <Table.HeaderCell>Num de la tache</Table.HeaderCell>

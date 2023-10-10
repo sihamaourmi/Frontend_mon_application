@@ -11,13 +11,15 @@ import NewTache from './Components/NewTache/NewTache';
 import AllTache from './Components/AllTache/AllTache';
 import EditTache from './Components/EditTache/EditTache';
 import Traitement from './Components/Traitement/Traitement';
+import LoginV1 from './Components/LoginV1/LoginV1';
 
 function App() {
   return (
     <div className="App">
     
       <Routes>
-        <Route path='/login' element={<Login/>}/>
+        <Route path='/loginV1' element={<Login/>}/>
+        <Route path='/login' element={<LoginV1/>}/>
         <Route path='/new-utilisateur' element={<Inscription/>}/>
         <Route path='/allutilisateur' element={<AllUtilisateur/>}/>
         <Route path='/utilisateur/:id' element={<EditUtilisateur/>}/>

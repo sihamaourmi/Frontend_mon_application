@@ -9,9 +9,12 @@ function Login() {
 */
   return (
     <React.Fragment> 
+      
     <Segment placeholder>
+    
     <Grid columns={2} relaxed='very' stackable>
-      <Grid.Column>
+      <Grid.Column >
+
         <Form action="http://localhost:5000/api/login" method="post">
           <Form.Input
             icon='user'
