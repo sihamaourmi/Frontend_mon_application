@@ -205,7 +205,7 @@ try{
          state.service==="Assemblage" ||
          state.service==="admin"?
          '':
-         <form action={`http://localhost:5000/tache/delete/${tache._id}?_method=DELETE`} method="post">
+         <form action={`http://localhost:5000/tache/delete/${tache._id}-${params.num_demande}?_method=DELETE`} method="post">
               <input type="hidden" name="_method" value="DELETE"/>
           
 

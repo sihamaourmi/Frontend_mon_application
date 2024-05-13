@@ -113,7 +113,7 @@ const handelSubmit = (event)=>{
         });
 }
 
-
+useEffect(()=>{
 axios.get('http://localhost:5000/alldemande',{withCredentials:true})
 .then(response=>{
 
@@ -142,7 +142,7 @@ axios.get('http://localhost:5000/alldemande',{withCredentials:true})
       console.log("errrooooooooooooor");
         // dispatch({type: 'FETCH_ERROR'});
       });
-
+    }, [])
 
   return (
 

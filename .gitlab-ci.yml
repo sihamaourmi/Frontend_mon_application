@@ -1,0 +1,26 @@
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - test
+  - deploy
+
+build-job:       # construire le projet avant deploiement
+  stage: build
+  image: node:latest
+  script:
+    - npm install
+    - CI=false npm run build
+
+unit-test-job:   # test unitaire
+  stage: test    # It only starts when the job in the build stage completes successfully.
+  image: node:latest
+  script:
+    - npm install
+    - npm run test
+
+
+deploy-job:      # déploiement vers le site externe.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  script:
+    - echo "Deploying application..."
+    - echo "Application successfully deployed."

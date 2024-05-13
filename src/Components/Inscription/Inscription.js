@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import './inscription.css'
 import { useNavigate } from "react-router-dom";
 function Inscription() {
   let navigate = useNavigate();
@@ -9,6 +10,7 @@ function Inscription() {
   const [email,setEmail] = useState('');
   const [service,setService] = useState('');
   const [password,setPassword] = useState('');
+  const [message,setMessage] = useState('');
   const [imagename,setImagename] = useState('');
  
 
@@ -30,6 +32,17 @@ const handelServiceChange = (event)=>{
 };
 const handelPasswordChange = (event)=>{
   setPassword(event.target.value);
+  //c'est pour le controle de mot de passe
+  const regExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/
+  const isvalidpassword = regExp.test(event.target.value)
+
+  if(isvalidpassword){
+    setMessage("Password is valid");
+  }
+  else{
+    setMessage("password not valid !!");
+  }
+
 };
 
   const handelSubmit = (event)=>{
@@ -54,7 +67,7 @@ const handelPasswordChange = (event)=>{
   }}
   return (
     <React.Fragment>
-<div class="container">
+<div class="container" className='body'>
       <div> 
         <h3 class="text-center bg-info text-white mt-3 mb-3 ">Créez un nouveau compte</h3>
       </div>
@@ -117,6 +130,7 @@ const handelPasswordChange = (event)=>{
         <div class="col-md-2 ">
         <input type="password"  class="form-control" name="password" onChange={handelPasswordChange} />
         </div>
+        <p>{message}</p>
         </div>
 
 

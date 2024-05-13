@@ -1,4 +1,5 @@
 import React, {useEffect, useReducer} from 'react'
+//axios:est une bibaliotheque largent utilisé pour effectuer des requétes HTTP de puis le navigateur ou des environnement Node.js .elle simplifie la communication avec le serveur en fournissant une interface simple pour differents types des requetes 
 import axios from 'axios'
 import { Table } from 'semantic-ui-react'
 import { Button } from 'semantic-ui-react'
